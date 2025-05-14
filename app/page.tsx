@@ -1,103 +1,157 @@
+"use client";
+
 import Image from "next/image";
+import PromoBar from "./Components/PromoBar";
+import ArrowButton from "./Components/ArrowButton";
+import ProductCardHome from "./Components/ProductCardHome";
+import FilledButton from "./Components/FilledButton";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const padding_y = "24";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <>
+      {/* hero */}
+      <section className="w-full md:h-screen text-center grid grid-cols-1 md:grid-cols-2">
+        {/* left */}
+        <div className="h-screen md:h-full w-full px-6 md:pt-24 md:px-14 flex flex-col gap-10 items-center justify-center">
+          <h1 className="text-3xl">
+            In the beginning, when the world was void and formless, a whisper of
+            creation filled the air—Let There Be Fragrance.
+          </h1>
+
+          <Image
+            src="/perfume_bottle.png"
+            alt="perfume bottle"
+            priority
+            width={250}
+            height={250}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* right */}
+        <div
+          className="h-screen md:h-full w-full px-6 md:pb-24 md:px-14 flex flex-col gap-10 items-center justify-center md:justify-end bg-cover bg-center"
+          style={{ backgroundImage: "url('home_clouds.png')" }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <div>
+            <h1 className="text-4xl">
+              A sweet aroma, a reflection of His love.
+            </h1>
+            <p className="text-xl">A sweet aroma, a reflection of His love.</p>
+          </div>
+          <FilledButton href="/shop">Shop Now</FilledButton>
+        </div>
+      </section>
+
+      {/* marquee */}
+      <PromoBar
+        text={
+          "🔥 Promotion • New Fragrance Launch • 20% Off All Orders • Limited Time Offer • Shop Now"
+        }
+      />
+
+      {/* popular fragrance */}
+      <section className={`py-${padding_y} px-12 flex flex-col gap-8`}>
+        <div className="flex items-center gap-8">
+          <h2 className="font-bold text-3xl text-center whitespace-nowrap">
+            Popular Fragrance
+          </h2>
+          <div className="flex-grow border-t border-black-300" />
+        </div>
+
+        <br />
+
+        <div>
+          <ArrowButton type="right">For Her</ArrowButton>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 place-items-center">
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </div>
+
+        <br />
+
+        <div className="text-right">
+          <ArrowButton type="left">For Him</ArrowButton>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 place-items-center">
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+        </div>
+
+        <br />
+
+        <div>
+          <ArrowButton type="right">Unisex</ArrowButton>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 place-items-center">
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+          <ProductCardHome
+            image={"/perfume_default.png"}
+            name={"Perfume name"}
+            price={255}
+          />
+        </div>
+      </section>
+
+      {/* about us */}
+      <section className={`py-${padding_y} px-12`}>
+        <div className="flex items-center gap-8">
+          <div className="flex-grow border-t border-black-300" />
+          <h2 className="font-bold text-3xl text-center whitespace-nowrap">
+            About Us
+          </h2>
+        </div>
+      </section>
+
+      {/* new collection */}
+      <section className={`py-${padding_y} px-12`}>
+        <div className="flex items-center gap-8">
+          <h2 className="font-bold text-3xl text-center whitespace-nowrap">
+            New Collection
+          </h2>
+          <div className="flex-grow border-t border-black-300" />
+        </div>
+      </section>
+    </>
   );
 }
