@@ -91,7 +91,7 @@ export default function Header() {
         <Link href="/cart">
           <ShoppingBag size={24} />
         </Link>
-        <Link href="/LogIn">
+        <Link href="/signin">
           <User size={24} />
         </Link>
       </div>
