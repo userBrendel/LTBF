@@ -2,13 +2,11 @@
 
 import Image from "next/image";
 import PromoBar from "./Components/ProductCard/PromoBar";
+import Button from "./Components/Button/FilledButton"
 import ArrowButton from "./Components/Button/ArrowButton";
 import ProductCardHome from "./Components/ProductCard/ProductCardHome";
-import FilledButton from "./Components/Button/FilledButton";
 
 export default function Home() {
-  const padding_y = "24";
-
   return (
     <>
       {/* hero */}
@@ -40,7 +38,7 @@ export default function Home() {
             </h1>
             <p className="text-xl">A sweet aroma, a reflection of His love.</p>
           </div>
-          <FilledButton href="/shop">Shop Now</FilledButton>
+          <Button href="/shop">Shop Now</Button>
         </div>
       </section>
 
@@ -52,17 +50,17 @@ export default function Home() {
       />
 
       {/* popular fragrance */}
-      <section className={`py-${padding_y} px-12 flex flex-col gap-8`}>
+      <section className="py-24 px-16 lg:px-48 space-y-8">
         <div className="flex items-center gap-8">
           <h2 className="font-bold text-3xl text-center whitespace-nowrap">
-            Popular Fragrance
+            Categories
           </h2>
           <div className="flex-grow border-t border-black-300" />
         </div>
 
         <br />
 
-        <div>
+        <div className="flex justify-center md:justify-start">
           <ArrowButton type="right">For Her</ArrowButton>
         </div>
 
@@ -134,17 +132,22 @@ export default function Home() {
       </section>
 
       {/* about us */}
-      <section className={`py-${padding_y} px-12`}>
+      <section className="py-24 px-16 lg:px-48 space-y-8">
         <div className="flex items-center gap-8">
           <div className="flex-grow border-t border-black-300" />
           <h2 className="font-bold text-3xl text-center whitespace-nowrap">
             About Us
           </h2>
         </div>
+
+        <div className="flex">
+          <div>asdadad</div>
+          <div>asd</div>
+        </div>
       </section>
 
       {/* new collection */}
-      <section className={`py-${padding_y} px-12`}>
+      <section className="py-24 px-16 lg:px-48 space-y-8">
         <div className="flex items-center gap-8">
           <h2 className="font-bold text-3xl text-center whitespace-nowrap">
             New Collection
