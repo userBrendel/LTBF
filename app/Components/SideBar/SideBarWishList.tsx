@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import ProductCardWishlist from "../ProductCardWishlist";
+import ProductCardWishlist from "../ProductCard/ProductCardWishlist";
 
 type SideBarWishlistProps = {
   isWishListOpen: boolean;

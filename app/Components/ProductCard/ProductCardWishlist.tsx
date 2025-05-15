@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import FilledButton from "./FilledButton";
+import FilledButton from "../Button/FilledButton";
 
 type ProductCardProps = {
   image: string;

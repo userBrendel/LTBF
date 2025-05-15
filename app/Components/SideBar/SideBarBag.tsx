@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import FilledButton from "../FilledButton";
+import FilledButton from "../Button/FilledButton";
 import ProductCardBag from "../ProductCard/ProductCardCart";
 
 type SideBarBagProps = {

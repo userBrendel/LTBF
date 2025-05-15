@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import PromoBar from "./Components/PromoBar";
-import ArrowButton from "./Components/ArrowButton";
-import ProductCardHome from "./Components/ProductCardHome";
-import FilledButton from "./Components/FilledButton";
+import PromoBar from "./Components/ProductCard/PromoBar";
+import ArrowButton from "./Components/Button/ArrowButton";
+import ProductCardHome from "./Components/ProductCard/ProductCardHome";
+import FilledButton from "./Components/Button/FilledButton";
 
 export default function Home() {
   const padding_y = "24";

@@ -1,5 +1,5 @@
 import React from "react";
-import FilledButton from "../Components/FilledButton";
+import FilledButton from "../Components/Button/FilledButton";
 import Link from "next/link";
 
 export default function Signin() {
