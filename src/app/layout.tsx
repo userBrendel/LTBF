@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Luxurious_Roman, Quicksand } from "next/font/google";
 import "./globals.css";
-import Header from "./Components/NavBar";
+import Header from "../components/layout/NavBar";
+import Footer from "../components/layout/Footer";
 
 export const luxuriousRoman = Luxurious_Roman({
   subsets: ["latin"],
@@ -35,6 +36,8 @@ export default function RootLayout({
         </div>
 
         {children}
+
+        <Footer />
       </body>
     </html>
   );

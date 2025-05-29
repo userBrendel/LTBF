@@ -1,10 +1,8 @@
-"use client";
-
 type PromoBarProps = {
-  text: string;
+  children: string;
 };
 
-export default function PromoBar({ text }: PromoBarProps) {
+export default function PromoBar({ children }: PromoBarProps) {
   return (
     <div className="bg-black py-6 overflow-hidden relative">
       <div className="marquee-wrapper">
@@ -12,7 +10,7 @@ export default function PromoBar({ text }: PromoBarProps) {
           <div key={i} className="flex">
             {[...Array(10)].map((_, j) => (
               <span key={j} className="text-white text-m font-semibold mx-5">
-                {text}
+                {children}
               </span>
             ))}
           </div>

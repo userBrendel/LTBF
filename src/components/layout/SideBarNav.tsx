@@ -4,14 +4,14 @@ import Link from "next/link";
 type SideBarNavProps = {
   isNavSideBarOpen: boolean;
   closePanels: () => void;
-  isShopOpen: boolean;
+  isCatalogueOpen: boolean;
   setShopOpen: (open: boolean) => void;
 };
 
 export default function SideBarNav({
   isNavSideBarOpen,
   closePanels,
-  isShopOpen,
+  isCatalogueOpen,
   setShopOpen,
 }: SideBarNavProps) {
   const hoverClass =
@@ -29,7 +29,7 @@ export default function SideBarNav({
         </button>
       </div>
 
-      <div className="flex flex-col space-y-6 p-6 pt-2 text-black text-lg">
+      <div className="flex flex-col space-y-8 p-6 pt-2 text-black text-lg">
         <Link href="/" onClick={closePanels} className={hoverClass}>
           Home
         </Link>
@@ -42,53 +42,57 @@ export default function SideBarNav({
 
         <div>
           <button
-            onClick={() => setShopOpen(!isShopOpen)}
+            onClick={() => setShopOpen(!isCatalogueOpen)}
             className={`flex justify-between items-center w-full ${hoverClass}`}
           >
-            <span>Shop</span>
+            <span>Catalogue</span>
             <ChevronDown
               size={20}
               className={`transition-transform ${
-                isShopOpen ? "rotate-180" : ""
+                isCatalogueOpen ? "rotate-180" : ""
               }`}
             />
           </button>
 
-          {isShopOpen && (
-            <div className="mt-2 ml-2 flex flex-col text-base border-l border-gray-300 pl-3 space-y-2">
-              <Link href="/shop" onClick={closePanels} className={hoverClass}>
+          {isCatalogueOpen && (
+            <div className="mt-2 ml-2 flex flex-col text-base pl-3 space-y-2">
+              <Link
+                href="/catalogue"
+                onClick={closePanels}
+                className={hoverClass}
+              >
                 All
               </Link>
               <Link
-                href="/shop/new"
+                href="/catalogue?filter=2025+collection"
                 onClick={closePanels}
                 className={hoverClass}
               >
                 New Collection
               </Link>
               <Link
-                href="/shop/bestseller"
+                href="/catalogue?sort=best+selling"
                 onClick={closePanels}
                 className={hoverClass}
               >
                 Bestseller
               </Link>
               <Link
-                href="/shop/for-her"
+                href="/catalogue?filter=for+her"
                 onClick={closePanels}
                 className={hoverClass}
               >
                 For Her
               </Link>
               <Link
-                href="/shop/for-him"
+                href="/catalogue?filter=for+him"
                 onClick={closePanels}
                 className={hoverClass}
               >
                 For Him
               </Link>
               <Link
-                href="/shop/unisex"
+                href="/catalogue?filter=unisex"
                 onClick={closePanels}
                 className={hoverClass}
               >

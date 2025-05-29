@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import ProductCardWishlist from "../ProductCard/ProductCardWishlist";
+import ProductCardWishlist from "../cards/ProductCardWishlist";
 
 type SideBarWishlistProps = {
   isWishListOpen: boolean;
@@ -12,7 +12,7 @@ export default function SideBarWishlist({
 }: SideBarWishlistProps) {
   return (
     <div
-      className={`fixed top-0 bottom-0 right-0 w-full md:w-164 bg-white backdrop-blur-md transform overflow-y-auto ${
+      className={`fixed top-0 bottom-0 right-0 w-full md:w-128 bg-white backdrop-blur-md transform overflow-y-auto ${
         isWishListOpen ? "translate-x-0" : "translate-x-full"
       } transition-transform duration-600 z-100 overflow-hidden`}
     >

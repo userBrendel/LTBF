@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
-import FilledButton from "../Button/FilledButton";
-import ProductCardBag from "../ProductCard/ProductCardCart";
+import FilledButton from "../ui/FilledButton";
+import ProductCardBag from "../cards/ProductCardBag";
 
 type SideBarBagProps = {
   isCartOpen: boolean;
@@ -13,7 +13,7 @@ export default function SideBarBag({
 }: SideBarBagProps) {
   return (
     <div
-      className={`fixed top-0 bottom-0 right-0 w-full lg:w-244 bg-white backdrop-blur-md transform overflow-y-auto ${
+      className={`fixed top-0 bottom-0 right-0 w-full lg:w-224 bg-white backdrop-blur-md transform overflow-y-auto ${
         isCartOpen ? "translate-x-0" : "translate-x-full"
       } transition-transform duration-600 z-100 overflow-hidden`}
     >
@@ -77,19 +77,19 @@ export default function SideBarBag({
           <div>
             <div className="flex justify-between">
               <h1 className="text-2xl">Subtotal:</h1>
-              <h1 className="text-2xl font-bold">Dhs. 00.00</h1>
+              <h1 className="text-2xl font-bold">AED 00.00</h1>
             </div>
             <div className="flex justify-between">
               <h1 className="text-2xl">Shipping:</h1>
-              <h1 className="text-2xl font-bold">Dhs. 00.00</h1>
+              <h1 className="text-2xl font-bold">AED 00.00</h1>
             </div>
             <div className="flex justify-between">
               <h1 className="text-2xl">Total:</h1>
-              <h1 className="text-2xl font-bold">Dhs. 00.00</h1>
+              <h1 className="text-2xl font-bold">AED 00.00</h1>
             </div>
           </div>
 
-          <FilledButton>Proceed to Checkout</FilledButton>
+          <FilledButton size="sm">Proceed to Checkout</FilledButton>
         </div>
       </div>
     </div>

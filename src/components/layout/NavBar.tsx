@@ -4,20 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, Search, Heart, ShoppingBag, User } from "lucide-react";
-import SideBarWishlist from "./SideBar/SideBarWishList";
-import SideBarNav from "./SideBar/SideBarNav";
-import CartSideBar from "./SideBar/SideBarBag"
+import SideBarWishlist from "./SideBarWishlist";
+import SideBarNav from "./SideBarNav";
+import CartSideBar from "./SideBarBag";
 
 export default function Header() {
   const [isNavSideBarOpen, setNavSideBarOpen] = useState(false);
   const [isWishListOpen, setWishlistOpen] = useState(false);
-  const [isShopOpen, setShopOpen] = useState(false);
+  const [isCatalogueOpen, setCatalogueOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
   function closePanels() {
     setNavSideBarOpen(false);
     setWishlistOpen(false);
-    setShopOpen(false);
+    setCatalogueOpen(false);
     setCartOpen(false);
   }
 
@@ -107,8 +107,8 @@ export default function Header() {
       <SideBarNav
         isNavSideBarOpen={isNavSideBarOpen}
         closePanels={closePanels}
-        isShopOpen={isShopOpen}
-        setShopOpen={setShopOpen}
+        isCatalogueOpen={isCatalogueOpen}
+        setShopOpen={setCatalogueOpen}
       />
 
       <SideBarWishlist
