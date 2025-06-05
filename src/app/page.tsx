@@ -8,6 +8,7 @@ import ErrorMessage from "../components/layout/ErrorMessage";
 import { filterFragrances, sortFragrances } from "../utils/general/product";
 
 export default async function HomePage() {
+  // Fetch data
   const { data: productsForHer, error: productsForHerError } =
     await filterFragrances("gender", "Her");
   const { data: productsForHim, error: productsForHimError } =
@@ -22,14 +23,12 @@ export default async function HomePage() {
   return (
     <>
       {/* hero */}
-      <main className="w-full md:h-screen text-center grid grid-cols-1 md:grid-cols-2 mt-16  md:mt-0 overflow-hidden">
-        {/* left */}
+      <main className="w-full md:h-screen text-center grid grid-cols-1 md:grid-cols-2 mt-16 md:mt-0 overflow-hidden">
         <div className="w-full h-screen md:h-full px-6 md:pt-24 md:px-14 flex flex-col gap-10 items-center justify-center">
           <h1 className="text-3xl">
             In the beginning, when the world was void and formless, a whisper of
             creation filled the air—Let There Be Fragrance.
           </h1>
-
           <Image
             src="/perfume_bottle.png"
             alt="perfume bottle"
@@ -40,7 +39,6 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* right */}
         <div
           className="w-full h-screen md:h-screen px-6 md:pb-24 md:px-14 flex flex-col gap-10 items-center justify-center md:justify-end bg-cover bg-center"
           style={{ backgroundImage: "url('/clouds.png')" }}
@@ -73,8 +71,6 @@ export default async function HomePage() {
             <div className="flex-grow border-t border-black" />
           </div>
 
-          <br />
-
           <div className="flex justify-start">
             <ArrowButton type="right" href="/catalogue?filter=for+her">
               For Her
@@ -90,22 +86,20 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <br />
-
           <div className="flex justify-end">
             <ArrowButton type="left" href="/catalogue?filter=for+him">
               For Him
             </ArrowButton>
           </div>
 
-          {productsForHim && <ErrorMessage>{productsForHimError}</ErrorMessage>}
+          {productsForHimError && (
+            <ErrorMessage>{productsForHimError}</ErrorMessage>
+          )}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
             {productsForHim?.map((product) => (
               <FragranceCardHome key={product.id} product={product} />
             ))}
           </div>
-
-          <br />
 
           <div className="flex justify-start">
             <ArrowButton type="right" href="/catalogue?filter=unisex">
@@ -117,9 +111,9 @@ export default async function HomePage() {
             <ErrorMessage>{productsUnisexError}</ErrorMessage>
           )}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
-            {productsUnisex?.map((product) => {
-              return <FragranceCardHome key={product.id} product={product} />;
-            })}
+            {productsUnisex?.map((product) => (
+              <FragranceCardHome key={product.id} product={product} />
+            ))}
           </div>
         </section>
 
@@ -190,7 +184,7 @@ export default async function HomePage() {
         {productsNewCollectionError ? (
           <ErrorMessage>{productsNewCollectionError}</ErrorMessage>
         ) : (
-          <section className=" px-6 md:px-16 lg:px-48 space-y-8">
+          <section className="px-6 md:px-16 lg:px-48 space-y-8">
             <div className="flex items-center gap-4">
               <h1 className="font-bold text-3xl text-center">New Collection</h1>
               <div className="flex-grow border-t border-black" />
