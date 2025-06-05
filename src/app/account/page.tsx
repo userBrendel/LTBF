@@ -1,137 +1,174 @@
+"use client";
+
 import FilledButton from "@/src/components/ui/FilledButton";
-import React from "react";
+import { useAuth } from "@/src/context/AuthContext";
+import { toast } from "sonner";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default async function Account() {
+interface Order {
+  id: string;
+  date: string;
+  total: number;
+  quantity: number;
+  size: string;
+}
+
+export default function AccountPage() {
+  const { session, signOut } = useAuth();
+  const searchParams = useSearchParams();
+
+  const [name, setName] = useState(session?.user?.user_metadata.display_name || "");
+  const [email, setEmail] = useState(session?.user?.email || "");
+  const [phone, setPhone] = useState(session?.user?.user_metadata.phone || "");
+  const [country, setCountry] = useState("United Arab Emirates");
+  const [city, setCity] = useState("Dubai");
+  const [address, setAddress] = useState("123 Sheikh Zayed Rd");
+
+  const [orders, setOrders] = useState<Order[]>([
+    {
+      id: "#12345",
+      date: "2025-05-10",
+      total: 89.99,
+      quantity: 1,
+      size: "50ml",
+    },
+  ]);
+
+  const handleUpdate = () => {
+    toast.success("Account updated (mock only)");
+  };
+
+  useEffect(() => {
+    const isSuccess = searchParams.get("success");
+    const latestTotal = searchParams.get("total");
+
+    if (isSuccess && latestTotal) {
+      const newOrder: Order = {
+        id: `#${Math.floor(Math.random() * 100000)}`,
+        date: new Date().toISOString().split("T")[0],
+        total: parseFloat(latestTotal),
+        quantity: 1,
+        size: "100ml", // default mock value
+      };
+      setOrders((prev) => [newOrder, ...prev]);
+    }
+  }, [searchParams]);
+
   return (
-    <>
-      <section className="mt-16 py-24 px-6 md:px-16 lg:px-48 space-y-8">
-        <div className="flex items-center gap-4">
-          <div className="flex-grow border-t border-black" />
-          <h1 className="font-bold text-3xl text-center">Hello, John</h1>
-          <div className="flex-grow border-t border-black" />
-        </div>
+    <div className="py-30 px-6 md:px-16 lg:px-48 space-y-16">
+      {/* Greeting */}
+      <div className="text-center space-y-2">
+        <h1 className="text-4xl font-bold">Hello, {name}</h1>
+        <p className="text-lg text-gray-600">Welcome back to your account dashboard</p>
+      </div>
 
-        <div>
-          <p className="text-lg">First Name: John</p>
-          <p className="text-lg">Last Name: Doe</p>
-          <p className="text-lg">Email: 3Q7Tl@example.com</p>
-          <p className="text-lg">Phone: 123-456-7890</p>
-        </div>
-
-        <div>
-          <p>Country/Region: United States</p>
-          <p>City: New York</p>
-          <p>Address: 123 Main St</p>
-        </div>
-
-        <FilledButton size="lg">Update Account</FilledButton>
-      </section>
-
-      <section className="py-24 px-6 md:px-16 lg:px-48 space-y-8">
-        <div className="flex items-center gap-4">
-          <div className="flex-grow border-t border-black" />
-          <h1 className="font-bold text-3xl text-center">Order History</h1>
-          <div className="flex-grow border-t border-black" />
-        </div>
-
-        <div className="overflow-x-auto flex justify-center px-16">
-          <table className="table-auto border text-left">
-            <thead>
-              <tr>
-                <th className="px-4 py-2 border">Order</th>
-                <th className="px-4 py-2 border">Placed On</th>
-                <th className="px-4 py-2 border">Total</th>
-                <th className="px-4 py-2 border">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="px-4 py-2 border">#12345</td>
-                <td className="px-4 py-2 border">2025-05-10</td>
-                <td className="px-4 py-2 border">$89.99</td>
-                <td className="px-4 py-2 border">Shipped</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <div className="flex flex-col items-center justify-center px-4 py-45 space-y-35 text-center">
-        <section className="mb-16">
-          <h1 className="text-4xl md:text-5xl mb-4">My Account</h1>
-          <p className="text-base md:text-lg">
-            Log in as email{" "}
-            <span className="cursor-pointer underline">(Sign out)</span>
-          </p>
-        </section>
-
-        <section className="w-full overflow-x-auto">
-          <h2 className="text-2xl md:text-3xl mb-4">Order History</h2>
-        </section>
-
-        <section className="w-full max-w-2xl space-y-6 text-left">
-          <h2 className="text-2xl md:text-3xl mb-4 text-center">
-            Your Account
-          </h2>
-
-          <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
-            <div className="flex-1">
-              <label className="block mb-1">First Name:</label>
-              <input type="text" className="w-full border px-3 py-2 rounded" />
-            </div>
-            <div className="flex-1">
-              <label className="block mb-1">Last Name:</label>
-              <input type="text" className="w-full border px-3 py-2 rounded" />
-            </div>
+      {/* Account Info */}
+      <section className="max-w-2xl mx-auto w-full space-y-6">
+        <h2 className="text-2xl font-semibold text-center">Your Information</h2>
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-1">Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            />
           </div>
 
           <div>
             <label className="block mb-1">Email:</label>
-            <input type="email" className="w-full border px-3 py-2 rounded" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            />
           </div>
 
           <div>
             <label className="block mb-1">Phone:</label>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <select className="border pl-2 pr-4 py-2 rounded w-full sm:w-auto">
-                <option value="+971">🇦🇪 +971</option>
-                <option value="+91">🇮🇳 +91</option>
-                <option value="+1">🇺🇸 +1</option>
-              </select>
-              <input
-                type="tel"
-                className="flex-1 border px-3 py-2 rounded"
-                placeholder="Phone number"
-              />
-            </div>
+            <PhoneInput
+              defaultCountry="AE"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={setPhone}
+              className="w-full border px-3 py-2 rounded"
+            />
           </div>
-        </section>
+        </div>
 
-        <section className="w-full max-w-2xl space-y-6 text-left">
-          <h2 className="text-2xl md:text-3xl mb-4 text-center">
-            Address Book
-          </h2>
-
-          <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+        {/* Address Section */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-medium mt-6">Address</h3>
+          <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <label className="block mb-1">Country / Region:</label>
-              <input type="text" className="w-full border px-3 py-2 rounded" />
+              <input
+                type="text"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="w-full border px-3 py-2 rounded"
+              />
             </div>
             <div className="flex-1">
               <label className="block mb-1">City:</label>
-              <input type="text" className="w-full border px-3 py-2 rounded" />
+              <input
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full border px-3 py-2 rounded"
+              />
             </div>
           </div>
-
           <div>
             <label className="block mb-1">Address:</label>
-            <input type="email" className="w-full border px-3 py-2 rounded" />
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            />
           </div>
-          <div className="text-center">
-            <FilledButton size="sm">Update Account</FilledButton>
-          </div>
-        </section>
-      </div>
-    </>
+        </div>
+
+        <div className="flex justify-center gap-4 mt-4">
+          <FilledButton size="lg" onClick={handleUpdate}>Update Account</FilledButton>
+          <FilledButton size="lg" onClick={signOut}>Sign Out</FilledButton>
+        </div>
+      </section>
+
+      {/* Order History */}
+      <section className="max-w-4xl mx-auto w-full">
+        <h2 className="text-2xl font-semibold text-center mb-6">Order History</h2>
+        <div className="overflow-x-auto">
+          <table className="table-auto border w-full text-left">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2 border">Order</th>
+                <th className="px-4 py-2 border">Placed On</th>
+                <th className="px-4 py-2 border">Total</th>
+                <th className="px-4 py-2 border">Quantity</th>
+                <th className="px-4 py-2 border">Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td className="px-4 py-2 border">{order.id}</td>
+                  <td className="px-4 py-2 border">{order.date}</td>
+                  <td className="px-4 py-2 border">${order.total.toFixed(2)}</td>
+                  <td className="px-4 py-2 border">{order.quantity}</td>
+                  <td className="px-4 py-2 border">{order.size}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   );
-}
+} 

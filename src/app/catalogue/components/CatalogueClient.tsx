@@ -1,21 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ProductCardHome from "../../../components/cards/ProductCardHome";
+import FragranceCardHome from "../../../components/cards/FragranceCard";
 import { useSearchParams, useRouter } from "next/navigation";
 
 type CatalogueClientProps = {
-  products: any[];
-  productsError: any;
+  data: any[];
 };
 
-export default function CatalogueClient({ products }: CatalogueClientProps) {
+export default function CatalogueClient({ data }: CatalogueClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [sortBy, setSortBy] = useState("a-z");
+  const [sortBy, setSortBy] = useState("alphabetical: a-z");
   const [filterBy, setFilterBy] = useState("all");
-  const [filtered, setFiltered] = useState(products);
+  const [filtered, setFiltered] = useState(data);
 
   useEffect(() => {
     const sort = searchParams.get("sort") ?? "a-z";
@@ -26,7 +25,7 @@ export default function CatalogueClient({ products }: CatalogueClientProps) {
   }, [searchParams]);
 
   useEffect(() => {
-    let result = [...products];
+    let result = [...data];
 
     if (filterBy !== "all") {
       result = result.filter((p) => {
@@ -63,23 +62,90 @@ export default function CatalogueClient({ products }: CatalogueClientProps) {
     }
 
     setFiltered(result);
-  }, [sortBy, filterBy, products]);
+  }, [sortBy, filterBy, data]);
 
-  const handleSortChange = (value: string) => {
+  function handleSortChange(value: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
     router.push(`/catalogue?${params.toString()}`);
-  };
+  }
 
-  const handleFilterChange = (value: string) => {
+  function handleFilterChange(value: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", value);
     router.push(`/catalogue?${params.toString()}`);
-  };
+  }
 
   return (
     <>
-      <div className="flex gap-8 justify-end">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => handleFilterChange("all")}
+            className={`p-2 text-sm border ${
+              filterBy === "all" && "bg-black text-white"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => handleFilterChange("2025 collection")}
+            className={`p-2 text-sm border ${
+              filterBy === "2025 collection" && "bg-black text-white"
+            }`}
+          >
+            2025 Collection
+          </button>
+          <button
+            onClick={() => handleFilterChange("offer")}
+            className={`p-2 text-sm border ${
+              filterBy === "offer" && "bg-black text-white"
+            }`}
+          >
+            Offer
+          </button>
+          <button
+            onClick={() => handleFilterChange("for him")}
+            className={`p-2 text-sm border ${
+              filterBy === "for him" && "bg-black text-white"
+            }`}
+          >
+            For Him
+          </button>
+          <button
+            onClick={() => handleFilterChange("for her")}
+            className={`p-2 text-sm border ${
+              filterBy === "for her" && "bg-black text-white"
+            }`}
+          >
+            For Her
+          </button>
+          <button
+            onClick={() => handleFilterChange("unisex")}
+            className={`p-2 text-sm border ${
+              filterBy === "unisex" && "bg-black text-white"
+            }`}
+          >
+            Unisex
+          </button>
+          <button
+            onClick={() => handleFilterChange("edp")}
+            className={`p-2 text-sm border ${
+              filterBy === "edp" && "bg-black text-white"
+            }`}
+          >
+            Eau de Parfum
+          </button>
+          <button
+            onClick={() => handleFilterChange("edt")}
+            className={`p-2 text-sm border ${
+              filterBy === "edt" && "bg-black text-white"
+            }`}
+          >
+            Eau de Toilette
+          </button>
+        </div>
+
         <div className="flex gap-2 items-center">
           <span>Sort By: </span>
           <div className="relative">
@@ -88,35 +154,11 @@ export default function CatalogueClient({ products }: CatalogueClientProps) {
               value={sortBy}
               onChange={(e) => handleSortChange(e.target.value)}
             >
-              <option value="a-z">A-Z</option>
-              <option value="z-a">Z-A</option>
-              <option value="best selling">Best Selling</option>
+              <option value="a-z">Alphabetical: A-Z</option>
+              <option value="z-a">Alphabetical: Z-A</option>
               <option value="low to high">Price: Low to High</option>
               <option value="high to low">Price: High to Low</option>
-            </select>
-
-            <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-xs">
-              ▼
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-2 items-center">
-          <span>Filter By:</span>
-          <div className="relative">
-            <select
-              className="w-full border text-sm p-2 pr-10 focus:outline-none focus:ring-0 appearance-none"
-              value={filterBy}
-              onChange={(e) => handleFilterChange(e.target.value)}
-            >
-              <option value="all">All</option>
-              <option value="2025 collection">2025 Collection</option>
-              <option value="offer">Offer</option>
-              <option value="edp">Eau de Parfum</option>
-              <option value="edt">Eau de Toilette</option>
-              <option value="for him">For Him</option>
-              <option value="for her">For Her</option>
-              <option value="unisex">Unisex</option>
+              <option value="best selling">Best Selling</option>
             </select>
 
             <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-xs">
@@ -128,15 +170,7 @@ export default function CatalogueClient({ products }: CatalogueClientProps) {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
         {filtered?.map((product) => {
-          return (
-            <ProductCardHome
-              key={product.id}
-              image={"/perfume_default.png"}
-              name={product.name}
-              price={product.price}
-              href={`/product/${product.id}`}
-            />
-          );
+          return <FragranceCardHome key={product.id} product={product} />;
         })}
       </div>
     </>

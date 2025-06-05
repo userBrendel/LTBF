@@ -1,20 +1,22 @@
-import { readAllProducts } from "./actions";
+import ErrorMessage from "@/src/components/layout/ErrorMessage";
 import CatalogueClient from "./components/CatalogueClient";
+import { readAllFragrances } from "@/src/utils/general/product";
 
-export default async function Catalogue() {
-  const { products, productsError } = await readAllProducts();
+export default async function CataloguePage() {
+  const { data, error } = await readAllFragrances();
 
   return (
-    <section className="mt-16 py-24 px-6 md:px-16 lg:px-48 space-y-8">
+    <main className="py-48 px-6 md:px-16 lg:px-48 space-y-8">
       <div className="flex items-center gap-4">
         <h1 className="font-bold text-3xl text-center">Catalogue</h1>
         <div className="flex-grow border-t border-black" />
       </div>
 
-      <CatalogueClient
-        products={products ?? []}
-        productsError={productsError}
-      />
-    </section>
+      {error ? (
+        <ErrorMessage>{error}</ErrorMessage>
+      ) : (
+        <CatalogueClient data={data ?? []} />
+      )}
+    </main>
   );
 }

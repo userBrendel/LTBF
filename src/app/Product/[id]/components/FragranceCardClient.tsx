@@ -1,23 +1,33 @@
 "use client";
 
 import FilledButton from "@/src/components/ui/FilledButton";
-import ProductCardProduct from "./ProductCardProduct";
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Heart, Minus, Plus } from "lucide-react";
+import { useWishlist } from "@/src/context/WishlistContext";
+import { useShoppingBag } from "@/src/context/ShoppingBagContext";
+import { getImageUrl } from "@/src/utils/general/getImageUrl";
 
-type ProductClientProps = {
+type FragranceCardClientProps = {
   product: any;
-  onClickHeart?: () => void;
-  onClickAddToBag?: () => void;
 };
 
-export default function ProductClient({
+export default function FragranceCardClient({
   product,
-  onClickHeart,
-  onClickAddToBag,
-}: ProductClientProps) {
+}: FragranceCardClientProps) {
+  const {
+    wishlist,
+    add: addToWishlist,
+    remove: removeFromWishlist,
+  } = useWishlist();
+  const { add: addToBag } = useShoppingBag();
+
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState<string>("Select value");
+  const [selectedSize, setSelectedSize] = useState(0);
+
+  const sizes = [50, 80, 100];
+  const isInWishlist = wishlist.some(
+    (item: any) => item.product_id === product.id
+  );
 
   function incrementQuantity() {
     setQuantity((q) => q + 1);
@@ -27,14 +37,29 @@ export default function ProductClient({
     setQuantity((q) => (q > 1 ? q - 1 : 1));
   }
 
-  const sizes = ["50 ml", "80 ml", "100 ml"];
+  const imageUrl = product.image || getImageUrl(product.id);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 place-items-center">
-      <ProductCardProduct
-        image={product.image ? product.image : "/perfume_default.png"}
-        onClickHeart={onClickHeart}
-      />
+      <section className="flex flex-col gap-4 justify-center items-center w-full max-w-100">
+        <div
+          className="w-full aspect-square bg-cover bg-center border p-4 flex justify-end"
+          style={{
+          backgroundImage: `url(${imageUrl})`,
+          }}
+        >
+          <Heart
+            onClick={
+              isInWishlist
+                ? () => removeFromWishlist(product)
+                : () => addToWishlist(product)
+            }
+            size={24}
+            className="text-black cursor-pointer"
+            fill={isInWishlist ? "black" : "none"}
+          />
+        </div>
+      </section>
 
       <div className="space-y-12">
         <div className="space-y-4">
@@ -57,16 +82,14 @@ export default function ProductClient({
             <span>Size:</span>
             <div className="relative w-full">
               <select
-                onChange={(e) => setSelectedSize(e.target.value)}
+                onChange={(e) => setSelectedSize(Number(e.target.value))}
                 value={selectedSize}
                 className="w-full border text-sm p-2 pr-10 focus:outline-none focus:ring-0 appearance-none"
               >
-                <option disabled value="Select size">
-                  Select size
-                </option>
+                <option value={0}>Select size</option>
                 {sizes.map((size) => (
                   <option key={size} value={size}>
-                    {size}
+                    {size}ml
                   </option>
                 ))}
               </select>
@@ -97,10 +120,14 @@ export default function ProductClient({
           </div>
 
           <div className="flex items-center gap-8">
-            <FilledButton size="text-2xl" onClick={onClickAddToBag}>
+            <FilledButton
+              size="xl"
+              onClick={() => addToBag(product, quantity, selectedSize)}
+            >
               Add To Bag
             </FilledButton>
-            <div className="text-xl font-semibold">AED {product.price}.00</div>
+
+            <div className="text-xl font-semibold">AED {product.price} </div>
           </div>
         </div>
       </div>

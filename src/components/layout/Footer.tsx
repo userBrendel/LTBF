@@ -11,6 +11,7 @@ export default function Footer() {
           alt="Ecommerce Logo"
           width={50}
           height={50}
+          className="w-12 h-auto"
           priority
         />
         <h1>LET THERE BE FRAGRANCE</h1>

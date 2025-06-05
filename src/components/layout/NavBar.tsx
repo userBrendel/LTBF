@@ -6,51 +6,51 @@ import Image from "next/image";
 import { Menu, Search, Heart, ShoppingBag, User } from "lucide-react";
 import SideBarWishlist from "./SideBarWishlist";
 import SideBarNav from "./SideBarNav";
-import CartSideBar from "./SideBarBag";
+import { useAuth } from "@/src/context/AuthContext";
+import SideBarShoppingBag from "./SideBarShoppingBag";
 
-export default function Header() {
+export default function NavBar() {
+  const { session } = useAuth();
+
   const [isNavSideBarOpen, setNavSideBarOpen] = useState(false);
-  const [isWishListOpen, setWishlistOpen] = useState(false);
+  const [isWishlistOpen, setWishlistOpen] = useState(false);
   const [isCatalogueOpen, setCatalogueOpen] = useState(false);
-  const [isCartOpen, setCartOpen] = useState(false);
+  const [isShoppingBagOpen, setShoppingBagOpen] = useState(false);
 
   function closePanels() {
     setNavSideBarOpen(false);
     setWishlistOpen(false);
     setCatalogueOpen(false);
-    setCartOpen(false);
+    setShoppingBagOpen(false);
   }
 
   return (
-    <nav className="px-12 py-10 relative z-100 w-full flex justify-between items-center">
+    <nav className="px-12 py-10 z-100 w-full flex justify-between items-center absolute top-0 left-0">
       {/* left */}
-      <div className="flex items-center space-x-6 text-black">
-        <button
-          onClick={() => {
-            closePanels();
-            setNavSideBarOpen(true);
-          }}
-          className="text-black flex items-center"
-        >
-          <Menu size={28} />
-        </button>
-      </div>
+      <button
+        onClick={() => {
+          closePanels();
+          setNavSideBarOpen(true);
+        }}
+      >
+        <Menu size={28} />
+      </button>
 
       {/* logo */}
-      <div className="absolute left-1/2 transform -translate-x-1/2">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt="Ecommerce Logo"
-            width={50}
-            height={50}
-            priority
-          />
-        </Link>
-      </div>
+      <Link href={"/"} className="absolute left-1/2 transform -translate-x-1/2">
+        <Image
+          src="/logo.png"
+          alt="Let There Be Fragrance logo"
+          width={50}
+          height={50}
+          className="w-12 h-auto "
+          priority
+        />
+      </Link>
 
       {/* right */}
       <div className="flex items-center space-x-6 text-black">
+        {/* search */}
         <div className="relative group flex items-center">
           <form
             action="/search"
@@ -72,32 +72,37 @@ export default function Header() {
         </div>
 
         {/* wishlist */}
-        <button
-          onClick={() => {
-            closePanels();
-            setWishlistOpen(true);
-          }}
-          className="text-black flex items-center"
-        >
-          <Heart size={24} />
-        </button>
+        {session && (
+          <button
+            onClick={() => {
+              closePanels();
+              setWishlistOpen(true);
+            }}
+            className="text-black flex items-center"
+          >
+            <Heart size={24} />
+          </button>
+        )}
 
-        <button
-          onClick={() => {
-            closePanels();
-            setCartOpen(true);
-          }}
-          className="text-black flex items-center"
-        >
-          <ShoppingBag size={24} />
-        </button>
+        {/* shopping bag */}
+        {session && (
+          <button
+            onClick={() => {
+              closePanels();
+              setShoppingBagOpen(true);
+            }}
+            className="text-black flex items-center"
+          >
+            <ShoppingBag size={24} />
+          </button>
+        )}
 
-        <Link href="/signin">
+        <Link href={session ? "/account" : "/signin"}>
           <User size={24} />
         </Link>
       </div>
 
-      {(isNavSideBarOpen || isWishListOpen || isCartOpen) && (
+      {(isNavSideBarOpen || isWishlistOpen || isShoppingBagOpen) && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
           onClick={closePanels}
@@ -111,12 +116,19 @@ export default function Header() {
         setShopOpen={setCatalogueOpen}
       />
 
-      <SideBarWishlist
-        isWishListOpen={isWishListOpen}
-        closePanels={closePanels}
-      />
+      {session && (
+        <SideBarWishlist
+          isWishlistOpen={isWishlistOpen}
+          closePanels={closePanels}
+        />
+      )}
 
-      <CartSideBar isCartOpen={isCartOpen} closePanels={closePanels} />
+      {session && (
+        <SideBarShoppingBag
+          isShoppingBagOpen={isShoppingBagOpen}
+          closePanels={closePanels}
+        />
+      )}
     </nav>
   );
 }

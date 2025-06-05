@@ -8,6 +8,7 @@ type FilledButtonProps = {
   href?: string;
   size: string;
   onClick?: () => void;
+  type?: "button" | "submit";
 };
 
 const MotionButton = motion.button;
@@ -18,11 +19,12 @@ export default function FilledButton({
   href,
   size,
   onClick,
+  type,
 }: FilledButtonProps) {
   const commonProps = {
     whileHover: { scale: 1.05, boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.25)" },
     transition: { type: "spring", stiffness: 300, damping: 20 },
-    className: `btn-wide inline-block py-2.5 px-6 text-${size} font-semibold !text-white bg-black border border-black text-center`,
+    className: `px-8 py-4 text-${size} !text-white bg-black border border-black text-center`,
   };
 
   return href ? (
@@ -30,7 +32,7 @@ export default function FilledButton({
       {children}
     </MotionLink>
   ) : (
-    <MotionButton onClick={onClick} {...commonProps}>
+    <MotionButton type={type} onClick={onClick} {...commonProps}>
       {children}
     </MotionButton>
   );
