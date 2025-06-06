@@ -35,9 +35,9 @@ export async function signUp(formData: FormData) {
     const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      phone,
       options: {
         data: {
+          phone,
           display_name,
         },
         emailRedirectTo: `http://localhost:3000/emailconfirmation`,
@@ -65,6 +65,7 @@ export async function signUp(formData: FormData) {
       throw new Error("There was an error saving your address.");
     }
 
+    console.log(data);
     console.log(`User ${user.id} signed up.`);
     return {
       data,
@@ -79,18 +80,117 @@ export async function signUp(formData: FormData) {
   }
 }
 
-export async function readSelfSession() {
+export async function updateAccount(formData: FormData) {
+  const supabase = await createClient();
+
+  const display_name = formData.get("fullName")?.toString().trim();
+  const email = formData.get("email")?.toString().trim();
+  const phone = formData.get("phone")?.toString().trim();
+
+  if (!email || !phone || !display_name) {
+    console.error("Missing required fields.");
+    throw new Error("Missing required fields.");
+  }
+
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      email,
+      data: {
+        phone,
+        display_name,
+      },
+    });
+
+    if (error) {
+      console.error(error.message);
+      throw new Error("There was a problem updating your account.");
+    }
+
+    return {
+      data,
+      error: null,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      data: null,
+      error: (error as Error).message,
+    };
+  }
+}
+
+export async function updateAddress(user: any, formData: FormData) {
+  const supabase = await createClient();
+
+  const country = formData.get("country")?.toString().trim();
+  const region = formData.get("region")?.toString().trim();
+  const address = formData.get("address")?.toString().trim();
+
+  try {
+    if (!country || !region || !address) {
+      console.error("Missing required fields.");
+      throw new Error("Missing required fields.");
+    }
+
+    const { data, error } = await supabase
+      .from("address")
+      .update({
+        country,
+        region,
+        address,
+      })
+      .eq("id", user.id);
+    if (error) {
+      console.error(error.message);
+      throw new Error("There was a problem updating your address.");
+    }
+
+    return {
+      data,
+      error: null,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      data: null,
+      error: (error as Error).message,
+    };
+  }
+}
+
+export async function readSelf() {
   const supabase = await createClient();
 
   try {
-    const { data, error } = await supabase.auth.getSession();
-
-    if (error) {
-      console.error(error);
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+    if (sessionError) {
+      console.error(sessionError);
       throw new Error("There was a problem retrieving your session.");
     }
 
-    return { data, error: null };
+    const userID = sessionData.session?.user.id;
+    if (!userID) {
+      throw new Error("User is not logged in.");
+    }
+
+    const { data: addressData, error: addressError } = await supabase
+      .from("address")
+      .select("*")
+      .eq("id", userID)
+      .single();
+    if (addressError) {
+      console.error(addressError);
+      throw new Error("There was a problem retrieving your address.");
+    }
+
+    return {
+      data: {
+        session: sessionData.session,
+        address: addressData,
+      },
+      error: null,
+    };
   } catch (error) {
     console.error(error);
     return { data: null, error: (error as Error).message };

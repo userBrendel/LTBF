@@ -3,20 +3,7 @@ import FilledButton from "../ui/FilledButton";
 import FragranceShoppingCardBag from "../cards/FragranceCardShoppingBag";
 import { useShoppingBag } from "@/src/context/ShoppingBagContext";
 import { useRouter } from "next/navigation";
-
-export interface Product {
-  id: string; 
-  name: string;
-  price: number;
-  image: string;
-}
-
-export interface ShoppingBagItem {
-  product: Product;
-  quantity: number;
-  size: string;
-}
-
+import { toast } from "sonner";
 
 type SideBarShoppingBagProps = {
   isShoppingBagOpen: boolean;
@@ -27,15 +14,40 @@ export default function SideBarShoppingBag({
   isShoppingBagOpen,
   closePanels,
 }: SideBarShoppingBagProps) {
-  const { shoppingBag: bag } = useShoppingBag();
+  const { shoppingBag } = useShoppingBag();
   const router = useRouter();
 
-  const subtotal = bag.reduce((total, item) => {
+  const subtotal = shoppingBag.reduce((total, item) => {
     return total + item.product.price * item.quantity;
   }, 0);
 
   const shipping = 0;
   const total = subtotal + shipping;
+
+  async function handleCheckout() {
+    const response = await fetch("/api/createCheckoutSession", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: shoppingBag.map((item) => ({
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+          image: item.product.image || `/perfume_default.png`,
+        })),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!data.url) {
+      toast.error("Something went wrong.");
+    }
+
+    window.location.href = data.url;
+  }
 
   return (
     <div
@@ -53,13 +65,16 @@ export default function SideBarShoppingBag({
         <div className="order-2 lg:order-1 space-y-8">
           <div className="border-b flex justify-between items-center">
             <h1 className="text-3xl">Shopping Bag</h1>
-            <h2>{bag.length} items</h2>
+            <h2>{shoppingBag.length} items</h2>
           </div>
 
           <div className="space-y-8">
-            {bag && bag.length > 0 ? (
-              bag.map((item, index) => (
-                <FragranceShoppingCardBag key={index} bag={item} />
+            {shoppingBag && shoppingBag.length > 0 ? (
+              shoppingBag.map((shoppingBag, index) => (
+                <FragranceShoppingCardBag
+                  key={index}
+                  shoppingBag={shoppingBag}
+                />
               ))
             ) : (
               <div className="space-y-16">
@@ -113,10 +128,10 @@ export default function SideBarShoppingBag({
           </div>
 
           <FilledButton
-            size="sm"
+            size="lg"
             onClick={() => {
               closePanels();
-              router.push("/checkout");
+              handleCheckout();
             }}
           >
             Proceed to Checkout

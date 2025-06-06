@@ -5,7 +5,7 @@ import ErrorMessage from "@/src/components/layout/ErrorMessage";
 import {
   readOneFragrance,
   readSuggestedFragrances,
-} from "@/src/utils/general/product";
+} from "@/src/utils/general/fragrance";
 
 export default async function ProductPage({
   params,

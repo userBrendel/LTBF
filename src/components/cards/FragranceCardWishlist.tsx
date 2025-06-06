@@ -5,7 +5,6 @@ import { useState } from "react";
 import FilledButton from "../ui/FilledButton";
 import { useWishlist } from "@/src/context/WishlistContext";
 import { useShoppingBag } from "@/src/context/ShoppingBagContext";
-import { getImageUrl } from "@/src/utils/general/getImageUrl";
 
 type FragranceCardWishlistProps = {
   wishlist: any;
@@ -30,18 +29,17 @@ export default function FragranceCardWishlist({
     setQuantity((q) => (q > 1 ? q - 1 : 1));
   }
 
-  const imageUrl =
-    wishlist.product.image || getImageUrl(wishlist.product.id);
-
   return (
     <section className="flex gap-4 items-start w-full">
       <div className="flex flex-col items-center space-y-2">
         <div
           className="w-32 h-32 bg-cover bg-center border flex justify-end items-start p-2 shrink-0"
           style={{
-            backgroundImage: `url(${imageUrl})`,
+            backgroundImage: `url(${
+              wishlist.product.image || `/perfume_default.png`
+            })`,
           }}
-        ></div>
+        />
 
         <div className="flex gap-4 items-center">
           <span className="text-sm w-6 text-center">x{quantity}</span>

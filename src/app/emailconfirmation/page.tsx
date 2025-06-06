@@ -8,7 +8,7 @@ import FilledButton from "@/src/components/ui/FilledButton";
 export default function EmailConfirmationPage() {
   const searchParams = useSearchParams();
 
-  const errorDescription = searchParams.get("error_description");
+  const errorDescription = searchParams?.get("error_description");
 
   const [error, setError] = useState("");
 
@@ -39,10 +39,6 @@ export default function EmailConfirmationPage() {
         <>
           <p>Your email has been confirmed.</p>
           <p>Redirecting you shortly...</p>
-
-          <FilledButton href="/signin" size="lg">
-            Sign In
-          </FilledButton>
         </>
       )}
     </main>

@@ -56,18 +56,13 @@ export default function WishlistProvider({
   }, [session?.user]);
 
   async function add(product: any) {
-    if (!session?.user) {
-      toast.error("Please sign in to add fragrances to your wishlist.");
-      return;
-    }
-
-    const { data, error } = await addToWishlist(session.user, product);
+    const { data, error } = await addToWishlist(session?.user, product);
     if (error) {
+      toast.error(error);
       return;
     }
 
     toast.success("Fragrance added to your wishlist.");
-
     setWishlist((prev) => {
       const alreadyExists = prev.some((item) => item.product.id === product.id);
       if (alreadyExists) return prev;
@@ -76,13 +71,9 @@ export default function WishlistProvider({
   }
 
   async function remove(product: any) {
-    if (!session?.user) {
-      toast.error("Please sign in to remove fragrances from your wishlist.");
-      return;
-    }
-
-    const { error } = await removeFromWishlist(session.user, product);
+    const { error } = await removeFromWishlist(session?.user, product);
     if (error) {
+      toast.error(error);
       return;
     }
 

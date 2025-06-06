@@ -1,6 +1,6 @@
 import ErrorMessage from "@/src/components/layout/ErrorMessage";
 import CatalogueClient from "./components/CatalogueClient";
-import { readAllFragrances } from "@/src/utils/general/product";
+import { readAllFragrances } from "@/src/utils/general/fragrance";
 
 export default async function CataloguePage() {
   const { data, error } = await readAllFragrances();

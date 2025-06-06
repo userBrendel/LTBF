@@ -10,7 +10,6 @@ export async function readUserShoppingBag(user: any) {
       .from("bag")
       .select(`*, product:product_id(*)`)
       .eq("user_id", user.id);
-
     if (error) {
       console.error(error.message);
       throw new Error("There was a problem retrieving your bag.");
@@ -39,6 +38,11 @@ export async function addToShoppingBag(
   const supabase = await createClient();
 
   try {
+    if (!user) {
+      console.error("User is not logged in.");
+      throw new Error("Please sign in to add fragrances to your shopping bag.");
+    }
+
     if (size === 0) {
       console.error("No size is selected.");
       throw new Error("Please select a size.");
@@ -54,7 +58,6 @@ export async function addToShoppingBag(
       })
       .select(`*, product:product_id(*)`)
       .single();
-
     if (error) {
       console.error(error.message);
       throw new Error("There was a problem adding the fragrance to your bag.");
@@ -78,8 +81,12 @@ export async function removeFromShoppingBag(bag: any) {
   const supabase = await createClient();
 
   try {
-    const { error } = await supabase.from("bag").delete().eq("id", bag.id);
+    if (!bag) {
+      console.error("User is not logged in.");
+      throw new Error("Please sign in to remove fragrances from your bag.");
+    }
 
+    const { error } = await supabase.from("bag").delete().eq("id", bag.id);
     if (error) {
       console.error(error.message);
       throw new Error(

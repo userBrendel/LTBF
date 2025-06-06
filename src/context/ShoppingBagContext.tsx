@@ -51,23 +51,14 @@ export function ShoppingBagProvider({ children }: { children: ReactNode }) {
   }, [session?.user]);
 
   async function add(product: any, quantity: number, size: number) {
-    if (!session?.user) {
-      toast.error("Please sign in to add fragrances to your bag.");
-      return;
-    }
-
-    if (!size) {
-      toast("⚠️ Please select a size.");
-      return;
-    }
-
     const { data, error } = await addToShoppingBag(
-      session.user,
+      session?.user,
       product,
       quantity,
       size
     );
     if (error) {
+      toast.error(error);
       return;
     }
 
@@ -75,19 +66,18 @@ export function ShoppingBagProvider({ children }: { children: ReactNode }) {
     setShoppingBag((prev) => [...prev, data]);
   }
 
-  async function remove(bag: any, silent = false) {
-    if (!session?.user) {
-      if (!silent) toast("❌ Please sign in to remove items from your bag.");
-      return;
-    }
-
+  async function remove(bag: any, silent?: boolean) {
     const { error } = await removeFromShoppingBag(bag);
     if (error) {
+      toast.error(error);
       return;
     }
 
-    if (!silent) toast.success("Fragrance removed from your shopping bag.");
+    if (silent) {
+      return;
+    }
 
+    toast.success("Fragrance removed from your shopping bag.");
     setShoppingBag((prev) => prev.filter((item) => item.id !== bag.id));
   }
 

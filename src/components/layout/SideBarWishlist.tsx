@@ -36,8 +36,8 @@ export default function SideBarWishlist({
 
         <div className="space-y-8">
           {wishlist && wishlist.length > 0 ? (
-            wishlist.map((item, index) => (
-              <FragranceCardWishlist key={index} wishlist={item} />
+            wishlist.map((wishlist, index) => (
+              <FragranceCardWishlist key={index} wishlist={wishlist} />
             ))
           ) : (
             <div className="space-y-16">
@@ -59,7 +59,7 @@ export default function SideBarWishlist({
                 </p>
 
                 <FilledButton
-                  size={"lg"}
+                  size="lg"
                   onClick={() => {
                     closePanels();
                     router.push("/catalogue");
